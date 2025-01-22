@@ -39,7 +39,8 @@ chattts_config = Config()
 
 def export_gpt():
     gpt_model = GPT(gpt_config=asdict(chattts_config.gpt), use_flash_attn=False).eval()
-    gpt_model.from_pretrained(asdict(chattts_config.path)["gpt_ckpt_path"])
+    # gpt_model.from_pretrained(asdict(chattts_config.path)["gpt_ckpt_path"])
+    gpt_model.from_pretrained(os.path.join(args.pth_dir, "GPT.pt"))
     gpt_model = gpt_model.eval()
     for param in gpt_model.parameters():
         param.requires_grad = False
@@ -353,7 +354,8 @@ def export_decoder():
     ).eval()
     decoder.load_state_dict(
         torch.load(
-            asdict(chattts_config.path)["decoder_ckpt_path"],
+            # asdict(chattts_config.path)["decoder_ckpt_path"],
+            os.path.join(args.pth_dir, "Decoder.pt"),
             weights_only=True,
             mmap=True,
         )
@@ -381,7 +383,9 @@ def export_vocos():
     ).eval()
     vocos.load_state_dict(
         torch.load(
-            asdict(chattts_config.path)["vocos_ckpt_path"], weights_only=True, mmap=True
+            # asdict(chattts_config.path)["vocos_ckpt_path"], 
+            os.path.join(args.pth_dir, "Vocos.pt"),
+            weights_only=True, mmap=True
         )
     )
 
